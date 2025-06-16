@@ -25,8 +25,8 @@
 
 // export default Dashboard
 
-import { Col, Row, Spin } from "antd";
-import React, { useEffect, useState } from "react";
+import { Col, Row, Spin, message } from "antd";
+import React, { useEffect, useState, useCallback } from "react";
 import AdminSlider from "./components/AdminSlider";
 import CategorySlider from "./components/CategorySlider";
 import SubCategorySlider from "./components/SubCategorySlider";
@@ -40,46 +40,37 @@ import MonthlySalesChart from "./components/MonthlySalesChart";
 import ServiceWiseSalesChart from "./components/ServiceWiseSalesChart";
 import ServiceWiseVendorChart from "./components/ServiceWiseVendorChart copy";
 
-function Dashboard() {
+function Dashboard({ service }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const selectedService =
+    service || localStorage.getItem("selectedService") || "food";
 
-  useEffect(() => {
-    fetchDashboard();
-  }, []);
-
-  const fetchDashboard = async () => {
+  const fetchDashboard = useCallback(async () => {
     try {
-      const res = await getDashboard();
-      console.log(res);
+      const res = await getDashboard(selectedService);
       setData(res);
     } catch (error) {
       message.error("Error fetching dashboard data");
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedService]);
 
-  // if (loading) return <Spin size='large' fullscreen />
+  useEffect(() => {
+    fetchDashboard();
+  }, [fetchDashboard]);
 
   return (
     <div className="p-4">
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={24} md={24} lg={24}>
-          {/* <AdminSlider /> */}
-          {/* <StaticsData data={data.countData} loading={loading}/> */}
           {data ? (
             <StaticsData data={data.countData} loading={loading} />
           ) : (
             <Spin size="large" />
           )}
         </Col>
-
-        {/* <Col xs={24} sm={24} md={24} lg={8}>
-                    <PendingApprovals />
-                    <CategorySlider data={data.categoryWithProduct} />
-                    <SubCategorySlider data={data.subCategoryWithProduct} />
-                </Col> */}
       </Row>
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={24} md={24} lg={16}>

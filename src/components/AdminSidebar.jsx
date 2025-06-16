@@ -25,102 +25,77 @@ import { FaArrowRightToBracket } from "react-icons/fa6";
 import { RiCoupon3Line } from "react-icons/ri";
 import { RiEBike2Fill } from "react-icons/ri";
 import { useAuth } from "../context/AuthContext";
+import { useService } from "../context/ServiceContext";
 
-const AdminSidebar = ({ collapsed, settingData }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const BASE_URL = import.meta.env.VITE_BASE_URL;
-
-  // Derive path segments after '/admin'
-  const pathSnippets = location.pathname.split("/").slice(2);
-  const openKey = pathSnippets.length > 1 ? pathSnippets[0] : "";
-  const rawSelected = pathSnippets[pathSnippets.length - 1] || "dashboard";
-
-  // Build a unique selectedKey when inside a submenu
-  const selectedKey = openKey ? `${openKey}-${rawSelected}` : rawSelected;
-  const [openKeys, setOpenKeys] = useState(openKey ? [openKey] : []);
-
-  useEffect(() => {
-    setOpenKeys(openKey ? [openKey] : []);
-  }, [openKey]);
-
-  const { adminLogout } = useAuth();
-
-  const menuItems = [
-    { type: "divider" },
+// Service menu definitions
+const serviceMenus = {
+  food: [
     {
       key: "dashboard",
       icon: <LuLayoutDashboard size={18} />,
       label: "Dashboard",
-      onClick: () => navigate("/admin"),
+      onClick: (navigate) => navigate("/admin"),
     },
     {
       key: "banner",
       icon: <IoImagesOutline size={18} />,
       label: "Banner",
-      onClick: () => navigate("/admin/banner"),
+      onClick: (navigate) => navigate("/admin/banner"),
     },
     {
       key: "category",
       icon: <TbCategory2 size={18} />,
       label: "Category",
-      onClick: () => navigate("/admin/category"),
+      onClick: (navigate) => navigate("/admin/category"),
     },
     {
       key: "sub-category",
       icon: <MdOutlineCategory size={18} />,
       label: "Sub Category",
-      onClick: () => navigate("/admin/sub-category"),
+      onClick: (navigate) => navigate("/admin/sub-category"),
     },
     {
       key: "product",
       icon: <IoFastFoodOutline size={18} />,
       label: "Product",
-      onClick: () => navigate("/admin/product"),
+      onClick: (navigate) => navigate("/admin/product"),
     },
     {
       key: "product-flags",
       icon: <IoFastFoodOutline size={18} />,
       label: "Product Flag",
-      onClick: () => navigate("/admin/product-flags"),
+      onClick: (navigate) => navigate("/admin/product-flags"),
     },
-    // {
-    //   key: "store199",
-    //   icon: <IoFastFoodOutline size={18} />,
-    //   label: "Store 199",
-    //   onClick: () => navigate("/admin/store199"),
-    // },
     {
       key: "vendor",
       icon: <LuUsers size={18} />,
       label: "Vendor",
-      onClick: () => navigate("/admin/vendor"),
+      onClick: (navigate) => navigate("/admin/vendor"),
     },
     {
       key: "shop",
       icon: <IoStorefront size={18} />,
       label: "Shop",
-      onClick: () => navigate("/admin/shop"),
+      onClick: (navigate) => navigate("/admin/shop"),
     },
     {
       key: "order",
       icon: <FaClipboardList size={18} />,
       label: "Order",
-      onClick: () => navigate("/admin/order"),
+      onClick: (navigate) => navigate("/admin/order"),
     },
     {
       key: "coupon",
       icon: <RiCoupon3Line size={18} />,
       label: "Coupon",
-      onClick: () => navigate("/admin/coupon"),
+      onClick: (navigate) => navigate("/admin/coupon"),
     },
     {
       key: "driver",
       icon: <RiEBike2Fill size={18} />,
       label: "Driver",
-      onClick: () => navigate("/admin/driver"),
+      onClick: (navigate) => navigate("/admin/driver"),
     },
-
     {
       key: "explorea",
       icon: <SiNextra size={18} />,
@@ -129,16 +104,15 @@ const AdminSidebar = ({ collapsed, settingData }) => {
         {
           key: "explore",
           label: "Explore",
-          onClick: () => navigate("/admin/explore"),
+          onClick: (navigate) => navigate("/admin/explore"),
         },
         {
           key: "explore-section",
           label: "Explore Section",
-          onClick: () => navigate("/admin/explore-section"),
+          onClick: (navigate) => navigate("/admin/explore-section"),
         },
       ],
     },
-
     {
       key: "request",
       icon: <GiTakeMyMoney size={18} />,
@@ -147,12 +121,12 @@ const AdminSidebar = ({ collapsed, settingData }) => {
         {
           key: "request-vendor",
           label: "Vendor Request",
-          onClick: () => navigate("/admin/request/vendor"),
+          onClick: (navigate) => navigate("/admin/request/vendor"),
         },
         {
           key: "request-driver",
           label: "Driver Request",
-          onClick: () => navigate("/admin/request/driver"),
+          onClick: (navigate) => navigate("/admin/request/driver"),
         },
       ],
     },
@@ -160,19 +134,18 @@ const AdminSidebar = ({ collapsed, settingData }) => {
       key: "user",
       icon: <FaRegUser size={18} />,
       label: "User",
-      onClick: () => navigate("/admin/user"),
+      onClick: (navigate) => navigate("/admin/user"),
     },
     {
       key: "settings",
       icon: <IoSettingsOutline size={18} />,
       label: "Settings",
       children: [
-        // { key: 'settings-profile', label: 'Profile', onClick: () => navigate('/admin/settings/profile') },
         {
           key: "settings-charges",
           icon: <FaSitemap />,
           label: "Site",
-          onClick: () => navigate("/admin/settings/charges"),
+          onClick: (navigate) => navigate("/admin/settings/charges"),
         },
         {
           key: "vendor-cms",
@@ -182,17 +155,18 @@ const AdminSidebar = ({ collapsed, settingData }) => {
             {
               key: "vendor-terms-and-conditions",
               label: "Terms & Conditions",
-              onClick: () => navigate("/admin/terms-and-conditions/vendor"),
+              onClick: (navigate) =>
+                navigate("/admin/terms-and-conditions/vendor"),
             },
             {
               key: "vendor-privacy-policy",
               label: "Privacy Policy",
-              onClick: () => navigate("/admin/privacy-policy/vendor"),
+              onClick: (navigate) => navigate("/admin/privacy-policy/vendor"),
             },
             {
               key: "vendor-refund-policy",
               label: "Refund Policy",
-              onClick: () => navigate("/admin/refund-policy/vendor"),
+              onClick: (navigate) => navigate("/admin/refund-policy/vendor"),
             },
           ],
         },
@@ -204,21 +178,259 @@ const AdminSidebar = ({ collapsed, settingData }) => {
             {
               key: "user-terms-and-conditions",
               label: "Terms & Conditions",
-              onClick: () => navigate("/admin/terms-and-conditions/user"),
+              onClick: (navigate) =>
+                navigate("/admin/terms-and-conditions/user"),
             },
             {
               key: "user-privacy-policy",
               label: "Privacy Policy",
-              onClick: () => navigate("/admin/privacy-policy/user"),
+              onClick: (navigate) => navigate("/admin/privacy-policy/user"),
             },
             {
               key: "user-refund-policy",
               label: "Refund Policy",
-              onClick: () => navigate("/admin/refund-policy/user"),
+              onClick: (navigate) => navigate("/admin/refund-policy/user"),
             },
           ],
         },
       ],
+    },
+  ],
+  clothing: [
+    {
+      key: "dashboard",
+      icon: <LuLayoutDashboard size={18} />,
+      label: "Dashboard",
+      onClick: (navigate) => navigate("/admin/clothing/dashboard"),
+    },
+    {
+      key: "category",
+      icon: <TbCategory2 size={18} />,
+      label: "Category",
+      onClick: (navigate) => navigate("/admin/clothing/category"),
+    },
+    {
+      key: "product",
+      icon: <IoFastFoodOutline size={18} />,
+      label: "Product",
+      onClick: (navigate) => navigate("/admin/clothing/product"),
+    },
+    {
+      key: "order",
+      icon: <FaClipboardList size={18} />,
+      label: "Order",
+      onClick: (navigate) => navigate("/admin/clothing/order"),
+    },
+  ],
+  mechanic: [
+    {
+      key: "dashboard",
+      icon: <LuLayoutDashboard size={18} />,
+      label: "Dashboard",
+      onClick: (navigate) => navigate("/admin/mechanic/dashboard"),
+    },
+    {
+      key: "category",
+      icon: <TbCategory2 size={18} />,
+      label: "Category",
+      onClick: (navigate) => navigate("/admin/mechanic/category"),
+    },
+    {
+      key: "order",
+      icon: <FaClipboardList size={18} />,
+      label: "Order",
+      onClick: (navigate) => navigate("/admin/mechanic/order"),
+    },
+  ],
+  service: [
+    {
+      key: "dashboard",
+      icon: <LuLayoutDashboard size={18} />,
+      label: "Dashboard",
+      onClick: (navigate) => navigate("/admin/service/dashboard"),
+    },
+    {
+      key: "category",
+      icon: <TbCategory2 size={18} />,
+      label: "Category",
+      onClick: (navigate) => navigate("/admin/service/category"),
+    },
+    {
+      key: "order",
+      icon: <FaClipboardList size={18} />,
+      label: "Order",
+      onClick: (navigate) => navigate("/admin/service/order"),
+    },
+  ],
+};
+
+const serviceList = [
+  { key: "food", label: "Food", icon: "🍔" },
+  { key: "clothing", label: "Clothing", icon: "👕" },
+  { key: "mechanic", label: "Mechanic", icon: "🔧" },
+  { key: "service", label: "Home Service", icon: "🏠" },
+];
+
+const getServiceMenu = (service, navigate) => {
+  const prefix = service === "food" ? "/admin" : `/admin/${service}`;
+  return [
+    {
+      key: service,
+      icon: serviceList.find((s) => s.key === service)?.icon,
+      label: serviceList.find((s) => s.key === service)?.label,
+      children: [
+        {
+          key: `${service}-dashboard`,
+          icon: <LuLayoutDashboard size={18} />,
+          label: "Dashboard",
+          onClick: () => navigate(`${prefix}/dashboard`),
+        },
+        {
+          key: `${service}-banner`,
+          icon: <IoImagesOutline size={18} />,
+          label: "Banner",
+          onClick: () => navigate(`${prefix}/banner`),
+        },
+        {
+          key: `${service}-category`,
+          icon: <TbCategory2 size={18} />,
+          label: "Category",
+          onClick: () => navigate(`${prefix}/category`),
+        },
+        {
+          key: `${service}-sub-category`,
+          icon: <MdOutlineCategory size={18} />,
+          label: "Sub Category",
+          onClick: () => navigate(`${prefix}/sub-category`),
+        },
+        {
+          key: `${service}-product`,
+          icon: <IoFastFoodOutline size={18} />,
+          label: "Product",
+          onClick: () => navigate(`${prefix}/product`),
+        },
+        {
+          key: `${service}-product-flags`,
+          icon: <IoFastFoodOutline size={18} />,
+          label: "Product Flag",
+          onClick: () => navigate(`${prefix}/product-flags`),
+        },
+        {
+          key: `${service}-vendor`,
+          icon: <LuUsers size={18} />,
+          label: "Vendor",
+          onClick: () => navigate(`${prefix}/vendor`),
+        },
+        {
+          key: `${service}-shop`,
+          icon: <IoStorefront size={18} />,
+          label: "Shop",
+          onClick: () => navigate(`${prefix}/shop`),
+        },
+        {
+          key: `${service}-order`,
+          icon: <FaClipboardList size={18} />,
+          label: "Order",
+          onClick: () => navigate(`${prefix}/order`),
+        },
+        {
+          key: `${service}-coupon`,
+          icon: <RiCoupon3Line size={18} />,
+          label: "Coupon",
+          onClick: () => navigate(`${prefix}/coupon`),
+        },
+        {
+          key: `${service}-driver`,
+          icon: <RiEBike2Fill size={18} />,
+          label: "Driver",
+          onClick: () => navigate(`${prefix}/driver`),
+        },
+        {
+          key: `${service}-explore`,
+          icon: <SiNextra size={18} />,
+          label: "Explore",
+          children: [
+            {
+              key: `${service}-explore-main`,
+              label: "Explore",
+              onClick: () => navigate(`${prefix}/explore`),
+            },
+            {
+              key: `${service}-explore-section`,
+              label: "Explore Section",
+              onClick: () => navigate(`${prefix}/explore-section`),
+            },
+          ],
+        },
+        {
+          key: `${service}-request`,
+          icon: <GiTakeMyMoney size={18} />,
+          label: "Payment Request",
+          children: [
+            {
+              key: `${service}-request-vendor`,
+              label: "Vendor Request",
+              onClick: () => navigate(`${prefix}/request/vendor`),
+            },
+            {
+              key: `${service}-request-driver`,
+              label: "Driver Request",
+              onClick: () => navigate(`${prefix}/request/driver`),
+            },
+          ],
+        },
+      ],
+    },
+  ];
+};
+
+const AdminSidebar = ({ collapsed, settingData }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { adminLogout } = useAuth();
+  const { serviceType } = useService();
+  const [selectedService, setSelectedService] = useState(
+    localStorage.getItem("selectedService") || "food"
+  );
+  const [openKeys, setOpenKeys] = useState([]);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("selectedService") || "food";
+    setSelectedService(stored);
+  }, [location]);
+
+  useEffect(() => {
+    if (serviceType) {
+      setOpenKeys([serviceType]);
+    }
+  }, [serviceType, location]);
+
+  // Service dropdowns for all services
+  const allServiceDropdowns = serviceList.map(
+    (service) => getServiceMenu(service.key, navigate)[0]
+  );
+
+  const menuItems = [
+    {
+      key: "main-dashboard",
+      icon: <LuLayoutDashboard size={18} style={{ color: "#1677ff" }} />,
+      label: "Main Dashboard",
+      onClick: () => navigate("/admin"),
+    },
+    { type: "divider" },
+    ...allServiceDropdowns,
+    { type: "divider" },
+    {
+      key: "user",
+      icon: <FaRegUser size={18} />,
+      label: "User",
+      onClick: () => navigate("/admin/user"),
+    },
+    {
+      key: "settings",
+      icon: <IoSettingsOutline size={18} />,
+      label: "Settings",
+      onClick: () => navigate("/admin/settings"),
     },
     { type: "divider" },
     {
@@ -240,7 +452,12 @@ const AdminSidebar = ({ collapsed, settingData }) => {
       collapsed={collapsed}
       trigger={null}
       className="shadow-md border-r"
-      style={{ height: "100vh", position: "sticky", top: 0, overflow: "auto" }}
+      style={{
+        height: "100vh",
+        position: "sticky",
+        top: 0,
+        overflow: "auto",
+      }}
     >
       <div className="flex items-center justify-center py-4">
         <Avatar
@@ -248,19 +465,14 @@ const AdminSidebar = ({ collapsed, settingData }) => {
           src="/logo.png"
           className="transition-all duration-300"
         />
-        {/* {!collapsed && (
-          <span className="ml-3 font-semibold text-2xl">Findin</span>
-        )} */}
       </div>
-
       <Menu
         mode="inline"
         theme="light"
-        selectedKeys={[selectedKey]}
-        openKeys={openKeys}
-        onOpenChange={(keys) => setOpenKeys(keys)}
         items={menuItems}
         className="text-[15px] font-medium"
+        openKeys={openKeys}
+        onOpenChange={setOpenKeys}
       />
     </Sider>
   );
