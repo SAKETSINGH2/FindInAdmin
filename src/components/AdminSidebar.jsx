@@ -236,11 +236,23 @@ const serviceMenus = {
       onClick: (navigate) => navigate("/admin/mechanic/category"),
     },
     {
-      key: "order",
-      icon: <FaClipboardList size={18} />,
-      label: "Order",
-      onClick: (navigate) => navigate("/admin/mechanic/order"),
+      key: "subCategory",
+      icon: <TbCategory2 size={18} />,
+      label: "Sub Category",
+      onClick: (navigate) => navigate("/admin/mechanic/sub-category"),
     },
+    {
+      key: "shop",
+      icon: <TbCategory2 size={18} />,
+      label: "Shop",
+      onClick: (navigate) => navigate("/admin/mechanic/shop"),
+    },
+    // {
+    //   key: "order",
+    //   icon: <FaClipboardList size={18} />,
+    //   label: "Order",
+    //   onClick: (navigate) => navigate("/admin/mechanic/order"),
+    // },
   ],
   service: [
     {
@@ -256,130 +268,45 @@ const serviceMenus = {
       onClick: (navigate) => navigate("/admin/service/category"),
     },
     {
-      key: "order",
-      icon: <FaClipboardList size={18} />,
-      label: "Order",
-      onClick: (navigate) => navigate("/admin/service/order"),
+      key: "subCategory",
+      icon: <TbCategory2 size={18} />,
+      label: "Sub Category",
+      onClick: (navigate) => navigate("/admin/service/sub-category"),
+    },
+    {
+      key: "shop",
+      icon: <TbCategory2 size={18} />,
+      label: "Shop",
+      onClick: (navigate) => navigate("/admin/service/shop"),
     },
   ],
 };
 
 const serviceList = [
-  { key: "food", label: "Food", icon: "🍔" },
-  { key: "clothing", label: "Clothing", icon: "👕" },
+  { key: "food", label: "Restaurent", icon: "🍔" },
+  // { key: "clothing", label: "Shopping", icon: "👕" },
   { key: "mechanic", label: "Mechanic", icon: "🔧" },
   { key: "service", label: "Home Service", icon: "🏠" },
 ];
 
 const getServiceMenu = (service, navigate) => {
-  const prefix = service === "food" ? "/admin" : `/admin/${service}`;
+  // Get the submenu for this service from serviceMenus
+  const children = (serviceMenus[service] || []).map((item) => ({
+    ...item,
+    onClick: () => item.onClick(navigate),
+    children: item.children
+      ? item.children.map((child) => ({
+          ...child,
+          onClick: () => child.onClick(navigate),
+        }))
+      : undefined,
+  }));
   return [
     {
       key: service,
       icon: serviceList.find((s) => s.key === service)?.icon,
       label: serviceList.find((s) => s.key === service)?.label,
-      children: [
-        {
-          key: `${service}-dashboard`,
-          icon: <LuLayoutDashboard size={18} />,
-          label: "Dashboard",
-          onClick: () => navigate(`${prefix}/dashboard`),
-        },
-        {
-          key: `${service}-banner`,
-          icon: <IoImagesOutline size={18} />,
-          label: "Banner",
-          onClick: () => navigate(`${prefix}/banner`),
-        },
-        {
-          key: `${service}-category`,
-          icon: <TbCategory2 size={18} />,
-          label: "Category",
-          onClick: () => navigate(`${prefix}/category`),
-        },
-        {
-          key: `${service}-sub-category`,
-          icon: <MdOutlineCategory size={18} />,
-          label: "Sub Category",
-          onClick: () => navigate(`${prefix}/sub-category`),
-        },
-        {
-          key: `${service}-product`,
-          icon: <IoFastFoodOutline size={18} />,
-          label: "Product",
-          onClick: () => navigate(`${prefix}/product`),
-        },
-        {
-          key: `${service}-product-flags`,
-          icon: <IoFastFoodOutline size={18} />,
-          label: "Product Flag",
-          onClick: () => navigate(`${prefix}/product-flags`),
-        },
-        {
-          key: `${service}-vendor`,
-          icon: <LuUsers size={18} />,
-          label: "Vendor",
-          onClick: () => navigate(`${prefix}/vendor`),
-        },
-        {
-          key: `${service}-shop`,
-          icon: <IoStorefront size={18} />,
-          label: "Shop",
-          onClick: () => navigate(`${prefix}/shop`),
-        },
-        {
-          key: `${service}-order`,
-          icon: <FaClipboardList size={18} />,
-          label: "Order",
-          onClick: () => navigate(`${prefix}/order`),
-        },
-        {
-          key: `${service}-coupon`,
-          icon: <RiCoupon3Line size={18} />,
-          label: "Coupon",
-          onClick: () => navigate(`${prefix}/coupon`),
-        },
-        {
-          key: `${service}-driver`,
-          icon: <RiEBike2Fill size={18} />,
-          label: "Driver",
-          onClick: () => navigate(`${prefix}/driver`),
-        },
-        {
-          key: `${service}-explore`,
-          icon: <SiNextra size={18} />,
-          label: "Explore",
-          children: [
-            {
-              key: `${service}-explore-main`,
-              label: "Explore",
-              onClick: () => navigate(`${prefix}/explore`),
-            },
-            {
-              key: `${service}-explore-section`,
-              label: "Explore Section",
-              onClick: () => navigate(`${prefix}/explore-section`),
-            },
-          ],
-        },
-        {
-          key: `${service}-request`,
-          icon: <GiTakeMyMoney size={18} />,
-          label: "Payment Request",
-          children: [
-            {
-              key: `${service}-request-vendor`,
-              label: "Vendor Request",
-              onClick: () => navigate(`${prefix}/request/vendor`),
-            },
-            {
-              key: `${service}-request-driver`,
-              label: "Driver Request",
-              onClick: () => navigate(`${prefix}/request/driver`),
-            },
-          ],
-        },
-      ],
+      children,
     },
   ];
 };

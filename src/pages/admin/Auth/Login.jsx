@@ -42,7 +42,7 @@ function Login() {
             // src="https://images.pexels.com/photos/1132047/pexels-photo-1132047.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             src="/Login.png"
             alt="Login Visual"
-            className="object-cover max-w-full max-h-screen"
+            className="object-contain w-full"
           />
         </div>
 

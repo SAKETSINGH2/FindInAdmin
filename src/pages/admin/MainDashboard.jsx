@@ -13,15 +13,15 @@ import { GiTakeMyMoney } from "react-icons/gi";
 
 const services = [
   {
-    name: "Food",
+    name: "Restaurent",
     key: "food",
     icon: <FaUtensils className="text-5xl text-pink-500 drop-shadow" />,
   },
-  {
-    name: "Clothing",
-    key: "clothing",
-    icon: <FaTshirt className="text-5xl text-blue-400 drop-shadow" />,
-  },
+  // {
+  //   name: "Shopping",
+  //   key: "clothing",
+  //   icon: <FaTshirt className="text-5xl text-blue-400 drop-shadow" />,
+  // },
   {
     name: "Mechanic",
     key: "mechanic",
@@ -34,83 +34,134 @@ const services = [
   },
 ];
 
-const serviceRoutes = [
-  {
-    key: "dashboard",
-    label: "Dashboard",
-    icon: <LuLayoutDashboard className="text-xl text-indigo-500" />,
-  },
-  {
-    key: "banner",
-    label: "Banner",
-    icon: <IoImagesOutline className="text-xl text-pink-400" />,
-  },
-  {
-    key: "category",
-    label: "Category",
-    icon: <TbCategory2 className="text-xl text-orange-400" />,
-  },
-  {
-    key: "sub-category",
-    label: "Sub Category",
-    icon: <MdOutlineCategory className="text-xl text-orange-300" />,
-  },
-  {
-    key: "product",
-    label: "Product",
-    icon: <FaUtensils className="text-xl text-pink-500" />,
-  },
-  {
-    key: "product-flags",
-    label: "Product Flag",
-    icon: <FaUtensils className="text-xl text-pink-300" />,
-  },
-  {
-    key: "vendor",
-    label: "Vendor",
-    icon: <LuUsers className="text-xl text-blue-400" />,
-  },
-  {
-    key: "shop",
-    label: "Shop",
-    icon: <IoStorefront className="text-xl text-green-400" />,
-  },
-  {
-    key: "order",
-    label: "Order",
-    icon: <GiTakeMyMoney className="text-xl text-yellow-500" />,
-  },
-  {
-    key: "coupon",
-    label: "Coupon",
-    icon: <RiCoupon3Line className="text-xl text-purple-400" />,
-  },
-  {
-    key: "driver",
-    label: "Driver",
-    icon: <RiEBike2Fill className="text-xl text-gray-500" />,
-  },
-  {
-    key: "explore",
-    label: "Explore",
-    icon: <LuLayoutDashboard className="text-xl text-indigo-400" />,
-  },
-  {
-    key: "explore-section",
-    label: "Explore Section",
-    icon: <LuLayoutDashboard className="text-xl text-indigo-300" />,
-  },
-  {
-    key: "request-vendor",
-    label: "Vendor Request",
-    icon: <LuUsers className="text-xl text-blue-300" />,
-  },
-  {
-    key: "request-driver",
-    label: "Driver Request",
-    icon: <RiEBike2Fill className="text-xl text-gray-400" />,
-  },
-];
+// Dynamic serviceRoutes for each service
+const serviceRoutes = {
+  food: [
+    {
+      key: "dashboard",
+      label: "Dashboard",
+      icon: <LuLayoutDashboard className="text-xl text-indigo-500" />,
+    },
+    {
+      key: "banner",
+      label: "Banner",
+      icon: <IoImagesOutline className="text-xl text-pink-400" />,
+    },
+    {
+      key: "category",
+      label: "Category",
+      icon: <TbCategory2 className="text-xl text-orange-400" />,
+    },
+    {
+      key: "sub-category",
+      label: "Sub Category",
+      icon: <MdOutlineCategory className="text-xl text-orange-300" />,
+    },
+    {
+      key: "product",
+      label: "Product",
+      icon: <FaUtensils className="text-xl text-pink-500" />,
+    },
+    {
+      key: "product-flags",
+      label: "Product Flag",
+      icon: <FaUtensils className="text-xl text-pink-300" />,
+    },
+    {
+      key: "vendor",
+      label: "Vendor",
+      icon: <LuUsers className="text-xl text-blue-400" />,
+    },
+    {
+      key: "shop",
+      label: "Shop",
+      icon: <IoStorefront className="text-xl text-green-400" />,
+    },
+    {
+      key: "order",
+      label: "Order",
+      icon: <GiTakeMyMoney className="text-xl text-yellow-500" />,
+    },
+    {
+      key: "coupon",
+      label: "Coupon",
+      icon: <RiCoupon3Line className="text-xl text-purple-400" />,
+    },
+    {
+      key: "driver",
+      label: "Driver",
+      icon: <RiEBike2Fill className="text-xl text-gray-500" />,
+    },
+    {
+      key: "explore",
+      label: "Explore",
+      icon: <LuLayoutDashboard className="text-xl text-indigo-400" />,
+    },
+    {
+      key: "explore-section",
+      label: "Explore Section",
+      icon: <LuLayoutDashboard className="text-xl text-indigo-300" />,
+    },
+    {
+      key: "request-vendor",
+      label: "Vendor Request",
+      icon: <LuUsers className="text-xl text-blue-300" />,
+    },
+    {
+      key: "request-driver",
+      label: "Driver Request",
+      icon: <RiEBike2Fill className="text-xl text-gray-400" />,
+    },
+  ],
+  mechanic: [
+    {
+      key: "dashboard",
+      label: "Dashboard",
+      icon: <LuLayoutDashboard className="text-xl text-indigo-500" />,
+    },
+    {
+      key: "category",
+      label: "Category",
+      icon: <TbCategory2 className="text-xl text-orange-400" />,
+    },
+    {
+      key: "subCategory",
+      icon: <TbCategory2 size={18} />,
+      label: "Sub Category",
+      onClick: (navigate) => navigate("/admin/mechanic/sub-category"),
+    },
+    {
+      key: "shop",
+      icon: <TbCategory2 size={18} />,
+      label: "Shop",
+      onClick: (navigate) => navigate("/admin/mechanic/shop"),
+    },
+  ],
+  service: [
+    {
+      key: "dashboard",
+      label: "Dashboard",
+      icon: <LuLayoutDashboard className="text-xl text-indigo-500" />,
+    },
+    {
+      key: "category",
+      label: "Category",
+      icon: <TbCategory2 className="text-xl text-orange-400" />,
+    },
+    {
+      key: "subCategory",
+      icon: <TbCategory2 size={18} />,
+      label: "Sub Category",
+      onClick: (navigate) => navigate("/admin/mechanic/sub-category"),
+    },
+    {
+      key: "shop",
+      icon: <TbCategory2 size={18} />,
+      label: "Shop",
+      onClick: (navigate) => navigate("/admin/mechanic/shop"),
+    },
+  ],
+};
 
 const MainDashboard = () => {
   const navigate = useNavigate();
@@ -139,7 +190,7 @@ const MainDashboard = () => {
   return (
     <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-gray-50 via-blue-50 to-purple-100 py-12 px-4">
       <div className="w-full max-w-5xl">
-        <h2 className="text-4xl font-extrabold text-gray-800 mb-10 text-center tracking-tight drop-shadow">
+        <h2 className="text-4xl font-extrabold text-gray-800 mb-10 text-center tracking-tight drop-shadow font-serif">
           {selectedService
             ? `Select a ${
                 services.find((s) => s.key === selectedService).name
@@ -164,7 +215,7 @@ const MainDashboard = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-2">
-            {serviceRoutes.map((route) => (
+            {(serviceRoutes[selectedService] || []).map((route) => (
               <div
                 key={route.key}
                 onClick={() => handleRouteClick(selectedService, route.key)}
